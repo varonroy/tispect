@@ -1,0 +1,158 @@
+[
+    {
+        "name": "John",
+        "week": [
+            {
+                "number": 3,
+                "expenses": [
+                    {
+                        "item": "Drinks",
+                        "cost": 18.0
+                    },
+                    {
+                        "item": "Snacks",
+                        "cost": 12.0
+                    },
+                    {
+                        "item": "Dinner",
+                        "cost": 19.0
+                    },
+                    {
+                        "item": "Transport",
+                        "cost": 20.0
+                    }
+                ]
+            },
+            {
+                "number": 4,
+                "expenses": [
+                    {
+                        "item": "Party Drinks",
+                        "cost": 19.0
+                    },
+                    {
+                        "item": "Beer",
+                        "cost": 16.0
+                    },
+                    {
+                        "item": "Late Night Bites",
+                        "cost": 17.0
+                    },
+                    {
+                        "item": "Midnight Snacks",
+                        "cost": 17.0
+                    },
+                    {
+                        "item": "More Beer",
+                        "cost": 14.0
+                    }
+                ]
+            },
+            {
+                "number": 5,
+                "expenses": [
+                    {
+                        "item": "Chill Beers",
+                        "cost": 14.0
+                    },
+                    {
+                        "item": "Quick Bites",
+                        "cost": 12.0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Becky",
+        "week": [
+            {
+                "number": 3,
+                "expenses": [
+                    {
+                        "item": "Happy Hour",
+                        "cost": 16.0
+                    }
+                ]
+            },
+            {
+                "number": 4,
+                "expenses": [
+                    {
+                        "item": "Dinner Out",
+                        "cost": 17.0
+                    },
+                    {
+                        "item": "Craft Beer",
+                        "cost": 15.0
+                    }
+                ]
+            },
+            {
+                "number": 5,
+                "expenses": [
+                    {
+                        "item": "Casual Dinner",
+                        "cost": 12.0
+                    },
+                    {
+                        "item": "Celebration Beers",
+                        "cost": 20.0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Jackie",
+        "week": [
+            {
+                "number": 3,
+                "expenses": [
+                    {
+                        "item": "Car Service",
+                        "cost": 19.0
+                    },
+                    {
+                        "item": "Gourmet Dinner",
+                        "cost": 18.0
+                    },
+                    {
+                        "item": "Premium Brews",
+                        "cost": 18.0
+                    }
+                ]
+            },
+            {
+                "number": 4,
+                "expenses": [
+                    {
+                        "item": "Night Drive",
+                        "cost": 17.0
+                    }
+                ]
+            },
+            {
+                "number": 5,
+                "expenses": [
+                    {
+                        "item": "Classic Brews",
+                        "cost": 14.0
+                    },
+                    {
+                        "item": "Car Ride",
+                        "cost": 12.0
+                    },
+                    {
+                        "item": "Weekend Chill",
+                        "cost": 19.0
+                    },
+                    {
+                        "item": "Home-cooked Meal",
+                        "cost": 12.0
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,22 @@
+[package]
+name = "tispect"
+version = "0.1.0"
+edition = "2021"
+authors = ["Roy Varon Weinryb varonroy@gmail.com"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/varonroy/tispect/"
+
+[dependencies]
+# cli
+clap = { version = "4.4.8", features = ["derive"] }
+
+# tui
+ratatui = { version = "0.26.0", features = ["all-widgets"] }
+crossterm = "0.27.0"
+
+# parsing
+pest = "2.7.5"
+pest_derive = "2.7.5"
+
+# misc
+derive_more = "0.99.17"

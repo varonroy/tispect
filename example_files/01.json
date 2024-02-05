@@ -1,0 +1,33 @@
+{
+    "test-key": "test-value",
+    "small": {
+        "key": "value"
+    },
+    "universe": {
+        "name": "Galactic System",
+        "dimensions": {
+            "width": 1000,
+            "height": 800
+        }
+    },
+    "objects": [
+        {
+            "id": 1,
+            "type": "Star",
+            "mass": 500000,
+            "position": {
+                "x": 200,
+                "y": 300
+            }
+        },
+        {
+            "id": 2,
+            "type": "Planet",
+            "mass": 20000,
+            "position": {
+                "x": 400,
+                "y": 500
+            }
+        }
+    ]
+}
