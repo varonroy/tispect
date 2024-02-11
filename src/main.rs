@@ -1,4 +1,4 @@
-use std::{io::stdout, ops::DerefMut, path::PathBuf};
+use std::{io::stdout, path::PathBuf};
 
 use app::App;
 use clap::Parser;
@@ -10,8 +10,12 @@ use crossterm::{
 use ratatui::prelude::{CrosstermBackend, Terminal};
 
 mod app;
+mod components;
+mod logger;
+mod simple_matcher;
 mod utils;
 mod value;
+mod vi;
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
