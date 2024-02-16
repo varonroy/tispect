@@ -715,6 +715,7 @@ dependencies = [
  "clap",
  "crossterm",
  "derive_more",
+ "itertools",
  "pest",
  "pest_derive",
  "ratatui",

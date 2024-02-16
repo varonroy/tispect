@@ -1,5 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 
+use itertools::Itertools;
 use crossterm::event::{Event, KeyCode, MouseEventKind};
 use ratatui::{
     layout::{Margin, Rect},
@@ -19,13 +20,19 @@ use crate::{
     },
 };
 
+#[derive(Debug, Clone, Copy)]
+struct Highlight {
+    pub col: i32,
+    pub length: i32,
+}
+
 pub struct Viewer {
     logger: Logger,
     scroll: i32,
     curosr: [i32; 2],
     lines: Vec<Vec<Element>>,
     vistate: ViState,
-    selections: BTreeMap<i32, BTreeSet<i32>>,
+    selections: BTreeMap<i32, Vec<Highlight>>,
 }
 
 impl Viewer {
@@ -42,6 +49,10 @@ impl Viewer {
 
     pub fn set_value_elemnets(&mut self, value_elements: Vec<Vec<Element>>) {
         self.lines = value_elements;
+    }
+
+    fn build_lines(&self) -> Vec<Vec<Span>> {
+        todo!()
     }
 
     pub fn draw(&mut self, f: &mut Frame<'_>, chunk: Rect) {
@@ -66,43 +77,75 @@ impl Viewer {
 
         self.scroll = self.scroll.min(self.lines.len() as i32 - 1).max(0);
 
+
+        fn build_line<'a>( elements: &'a[Element], highlights: &[Highlight]) -> ratatui::text::Line<'a>{
+            let elemnets_bounds = elements.iter().scan(0, |state, e| {
+                let start = *state;
+                let end = start + e.content.len();
+                *state = end;
+                Some((start, end))
+            }).collect_vec();
+
+            let mut spans = Vec::new();
+            let mut element_i = 0;
+            // let mut highlight_i = 0;
+            let mut col = 0;
+            while element_i < elements.len() {
+                let e = &elements[element_i];
+                let s = &e.content[col - elemnets_bounds[element_i].0..];
+
+                let mut consume_len = s.len();
+                let mut num_highlights = 0;
+
+                // check elements that are applied at this colomun
+                for h in highlights.iter() {
+                    if col >= h.col as usize && col < (h.col + h.length)  as usize{
+                        num_highlights += 1;
+                        consume_len = consume_len.min((h.col + h.length) as usize - col);
+                    }
+                }
+
+                // check elemnets that are not applied, but still limit how many chars can be
+                // consumed
+                for h in highlights.iter() {
+                    if h.col as usize > col && (h.col as usize) < col + s.len() {
+                        consume_len = consume_len.min((h.col) as usize - col);
+                    }
+                }
+
+
+                let ty_c = element_type_to_color(e.ty);
+                let style = match num_highlights  {
+                    0 => Style::default().fg(ty_c),
+                    1 => Style::default().fg(ratatui::style::Color::Black).bg(ty_c),
+                    _ => Style::default().fg(ratatui::style::Color::White).bg(ratatui::style::Color::Black),
+                };
+
+                col += consume_len;
+                if s.len() == consume_len as usize{
+                    element_i += 1;
+                }
+                spans.push(Span::from(&s[..consume_len]).style(style));
+            }
+
+            ratatui::text::Line::from(spans)
+        }
+
+
         let line_start = self.scroll;
         let line_end = (self.scroll + container_h).min(self.lines.len() as i32);
-
         let lines = &self.lines[(line_start as usize)..(line_end as usize)];
         let lines = lines
             .into_iter()
             .enumerate()
             .map(|(i, line)| {
-                let mut start_col = 0i32;
-                let spans = line
-                    .iter()
-                    .flat_map(|e| {
-                        let i = i as i32 + line_start;
-                        let out = if i == self.curosr[0]
-                            && self.curosr[1] >= start_col
-                            && self.curosr[1] < start_col + e.content.len() as i32
-                        {
-                            let s = e.content.as_str();
-                            let c = (self.curosr[1] - start_col) as usize;
-                            let color = element_type_to_color(e.ty);
-                            vec![
-                                Span::from(&s[..c]).style(Style::default().fg(color)),
-                                Span::from(&s[c..c + 1])
-                                    .style(Style::default().fg(Color::Black).bg(color)),
-                                ratatui::text::Span::from(&s[(c + 1)..])
-                                    .style(Style::default().fg(color)),
-                            ]
-                        } else {
-                            vec![Span::from(e.content.as_str())
-                                .style(Style::default().fg(element_type_to_color(e.ty)))]
-                        };
-
-                        start_col += e.content.len() as i32;
-                        out
-                    })
-                    .collect::<Vec<_>>();
-                ratatui::text::Line::from(spans)
+                let line_idx = line_start + i as i32;
+                let mut highlights = self.selections.get(&line_idx).cloned().unwrap_or_default();
+                if self.curosr[0] == line_idx {
+                    highlights.push(Highlight{col: self.curosr[1], length: 1});
+                    highlights.sort_by_key(|h|h.col);
+                }
+                build_line( line, &highlights)
             })
             .collect::<Vec<_>>();
 
@@ -211,16 +254,17 @@ impl Viewer {
 
     fn next(&mut self) {
         if let Some((&row, selections)) = self.selections.range(self.curosr[0]..).next() {
-            let range_start = if self.curosr[0] == row {
-                self.curosr[1]
-            } else {
-                0
-            };
-
-            if let Some(&col) = selections.range(range_start..).next() {
-                self.curosr[0] = row;
-                self.curosr[1] = col;
-            }
+            todo!()
+            // let range_start = if self.curosr[0] == row {
+            //     self.curosr[1]
+            // } else {
+            //     0
+            // };
+            //
+            // if let Some(&col) = selections.range(range_start..).next() {
+            //     self.curosr[0] = row;
+            //     self.curosr[1] = col;
+            // }
         }
     }
 
